@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cadastroMusica">
+
+
+
+
+            <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="51dp"
+                    android:layout_marginEnd="111dp"
+                    android:layout_marginRight="111dp"
+                    android:gravity="center"
+                    android:text="Adicionar musica"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.045" />
+
+                <EditText
+                    android:id="@+id/nomemusica"
+                    android:layout_width="333dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginEnd="39dp"
+                    android:layout_marginRight="130dp"
+                    android:ems="10"
+                    android:hint="Nome da Musica"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/nomeautor"
+                    android:layout_width="333dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nomemusica"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="39dp"
+                    android:layout_marginLeft="39dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="38dp"
+                    android:layout_marginRight="38dp"
+                    android:ems="10"
+                    android:hint="Nome do Autor"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/nomealbum"
+                    android:layout_width="333dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nomeautor"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="39dp"
+                    android:layout_marginLeft="39dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="39dp"
+                    android:layout_marginRight="39dp"
+                    android:ems="10"
+                    android:hint="Nome do Album"
+                    android:inputType="textPersonName" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/letra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nomealbum"
+                    android:layout_marginTop="12dp"
+                    android:hint="Escreva a letra da musica em ingles" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/campotraducao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/letra"
+                    android:layout_marginTop="12dp"
+                    android:hint="Escreva a traduçao da musica" />
+
+                <Button
+                    android:id="@+id/cancelar"
+                    android:layout_width="136dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/campotraducao"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="70dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginEnd="205dp"
+                    android:layout_marginRight="205dp"
+                    android:text="Cancelar" />
+
+                <Button
+                    android:id="@+id/adicionar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/campotraducao"
+                    android:layout_alignStart="@+id/cancelar"
+                    android:layout_alignLeft="@+id/cancelar"
+                    android:layout_marginStart="136dp"
+                    android:layout_marginLeft="136dp"
+                    android:layout_marginTop="48dp"
+                    android:text="Adicionar" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+</RelativeLayout>
