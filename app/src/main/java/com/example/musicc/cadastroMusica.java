@@ -54,33 +54,33 @@ public class cadastroMusica extends AppCompatActivity {
         mus.setNome(nomemusica.getText().toString());
         mus.setAutor(nomealtor.getText().toString());
         mus.setAlbum(nomealbum.getText().toString());
-        mus.setLetra(nomemusica.getText().toString().replace(" ", "").trim());
-        mus.setTraducao(nomemusica.getText().toString().replace(" ", "").trim() + "Traducao");
+        mus.setLetra(this.letra.getText().toString());
+        mus.setTraducao(this.traducao.getText().toString());
 
 
         // Faz os arquivos correspondentes a letra e tradução
 
-        try {
-            FileOutputStream letra = openFileOutput(mus.getLetra()+".txt", MODE_PRIVATE);
-            FileOutputStream traducao = openFileOutput(mus.getTraducao()+".txt", MODE_PRIVATE);
-            OutputStreamWriter escrita = new OutputStreamWriter(letra);
-            BufferedWriter bw = new BufferedWriter(escrita);
-            bw.write(this.letra.getText().toString());
-            bw.close();
-            escrita.close();
-            letra.close();
-
-            OutputStreamWriter escritaTraducao = new OutputStreamWriter(traducao);
-            bw = new BufferedWriter(escritaTraducao);
-            bw.write(this.traducao.getText().toString());
-            bw.close();
-            escrita.close();
-            letra.close();
-
-
-        }catch (Exception e){
-
-        }
+//        try {
+//            FileOutputStream letra = openFileOutput(mus.getLetra()+".txt", MODE_PRIVATE);
+//            FileOutputStream traducao = openFileOutput(mus.getTraducao()+".txt", MODE_PRIVATE);
+//            OutputStreamWriter escrita = new OutputStreamWriter(letra);
+//            BufferedWriter bw = new BufferedWriter(escrita);
+//            bw.write(this.letra.getText().toString());
+//            bw.close();
+//            escrita.close();
+//            letra.close();
+//
+//            OutputStreamWriter escritaTraducao = new OutputStreamWriter(traducao);
+//            bw = new BufferedWriter(escritaTraducao);
+//            bw.write(this.traducao.getText().toString());
+//            bw.close();
+//            escrita.close();
+//            letra.close();
+//
+//
+//        }catch (Exception e){
+//
+//        }
 
         musicaControle muscontrole = new musicaControle(cadastroMusica.this);
 

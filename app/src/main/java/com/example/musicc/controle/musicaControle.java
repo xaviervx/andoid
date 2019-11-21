@@ -24,9 +24,10 @@ public class musicaControle {
         musica mus = new musica();
         String SQL = "SELECT * FROM musica WHERE nome = '" + n + "'";
         try {
-
-            SQLiteDatabase db = banco.getReadableDatabase();
-            Cursor c = db.rawQuery(SQL, null);
+            remote r = new remote(this.com);
+            r.prepare("SELECT * FROM musica WHERE nome = :nome");
+            r.bindValue(":nome", n);
+            Cursor c = r.executeQuery();
             int cursorCont = c.getCount();
             c.moveToFirst();
             if (cursorCont > 0) {
@@ -76,9 +77,10 @@ public class musicaControle {
         String SQL = "SELECT * FROM musica WHERE nome LIKE '%" + nomeM + "%' OR autor LIKE '" + nomeM + "' ORDER BY nome";
         ArrayList<String> nomeMusicas = new ArrayList<String>();
         try {
-
-            SQLiteDatabase db = banco.getReadableDatabase();
-            Cursor c = db.rawQuery(SQL, null);
+            remote r = new remote(this.com);
+            r.prepare("SELECT * FROM musica WHERE nome LIKE :nome OR autor LIKE :nome ORDER BY nome");
+            r.bindValue(":nome", "%"+nomeM+"%");
+            Cursor c = r.executeQuery();
             // System.out.println(""+c.getInt(c.getColumnIndex("id")));
 
             int cursorCont = c.getCount();
@@ -90,12 +92,7 @@ public class musicaControle {
             } else {
                 nomeMusicas = listaMusica();
             }
-
-            c.close();
-            banco.close();
-
         } catch (SQLException e) {
-
         }
         return nomeMusicas;
     }
@@ -103,11 +100,16 @@ public class musicaControle {
     public String novaMusica(musica mus) {
 
         String ret = "";
-        String SQL = "INSERT INTO musica(nome, autor, letra, traducao, album) values ('" + mus.getNome() + "', '" + mus.getAutor() + "', '" + mus.getLetra() + "', '" + mus.getTraducao() + "', '" + mus.getAlbum() + "')";
         try {
-            SQLiteDatabase db = banco.getWritableDatabase();
-            db.execSQL(SQL);
-            db.close();
+            remote r = new remote(this.com);
+            r.prepare("INSERT INTO musica(nome, autor, letra, traducao, album) values (:nome, :autor, :letra, :traducao, :album)");
+            r.bindValue(":nome", mus.getNome());
+            r.bindValue(":autor", mus.getAutor());
+            r.bindValue(":letra", mus.getLetra());
+            r.bindValue(":traducao", mus.getTraducao());
+            r.bindValue(":album", mus.getAlbum());
+            r.execute();
+            r.executeRemote();
             ret = "Musica adicionada";
         } catch (SQLException e) {
             ret = "Erro em: " + e;

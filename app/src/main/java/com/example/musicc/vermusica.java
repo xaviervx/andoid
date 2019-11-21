@@ -41,8 +41,8 @@ public class vermusica extends AppCompatActivity {
 
         camponomeautor.setText("Autor - " + mus.getAutor());
         campoalbum.setText("Album - " + mus.getAlbum());
-        campoletra.setText(buscaLetra(mus.getLetra()));
-        campotraducao.setText(buscaTraducao(mus.getTraducao()));
+        campoletra.setText(mus.getLetra());
+        campotraducao.setText(mus.getTraducao());
     }
 
     private String buscaLetra(String letra) {
