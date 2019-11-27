@@ -38,7 +38,7 @@ public class remote<E> {
     private String remoteDb = "musicc";
     private String remoteUser = "root";
     private String remotePass = "";
-    private String apiURL = "http://200.132.17.142/musicc/remoto.php";
+    private String apiURL = "http://200.132.172.198/musicc/remoto.php";
     private E obj;
 
     public remote(Context activity, String apiURL, String remoteAdress, String remoteDb, String remoteUser, String remotePass) {

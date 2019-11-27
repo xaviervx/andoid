@@ -73,6 +73,7 @@ public class configuracoesUsuario extends AppCompatActivity {
                 if (edNovaSenha.getText().toString().equals(edReNovaSenha.getText().toString())){
                     usu.setSenha(edNovaSenha.getText().toString());
                     mensagem = uc.atualiza_usuario(usu);
+                    finish();
                 }else{
                     mensagem = "A nova senha não confere";
                 }

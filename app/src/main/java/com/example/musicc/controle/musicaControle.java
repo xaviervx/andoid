@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.musicc.modelo.musica;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 public class musicaControle {
@@ -116,6 +119,32 @@ public class musicaControle {
         }
         return ret;
     }
+    public void sincronizaMusica(){
+        remote r = new remote(this.com){
+            @Override
+            public void success(JSONArray jsonArray) {
+                super.success(jsonArray);
+                this.prepare("delete from musica");
+                this.execute();
+                for(int i = 0; i < jsonArray.length(); i++){
+                    try {
 
+                        musica mus = new musica(jsonArray.getJSONObject(i));
+                        this.prepare("INSERT INTO musica(nome, autor, letra, traducao, album) values (:nome, :autor, :letra, :traducao, :album)");
+                        this.bindValue(":nome", mus.getNome());
+                        this.bindValue(":autor", mus.getAutor());
+                        this.bindValue(":letra", mus.getLetra());
+                        this.bindValue(":traducao", mus.getTraducao());
+                        this.bindValue(":album", mus.getAlbum());
+                        this.execute();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        r.prepare("SELECT * FROM musica");
+        r.executeRemote();
+    }
 
 }

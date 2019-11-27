@@ -89,11 +89,15 @@ public class usuarioControle {
     public String atualiza_usuario(usuario usr) {
         int idd = Integer.parseInt(usr.getId());
 
-        String ATUALIZA_USUARIO = "UPDATE usuario SET nome = '" + usr.getNome() + "',senha ='" + usr.getSenha() + "' WHERE id = " + idd;
+//        String ATUALIZA_USUARIO = "UPDATE usuario SET nome = '" + usr.getNome() + "',senha ='" + usr.getSenha() + "' WHERE id = " + idd;
         try {
-            SQLiteDatabase db = banco.getWritableDatabase();
-            db.execSQL(ATUALIZA_USUARIO);
-            db.close();
+            remote r = new remote(this.com);
+            r.prepare("UPDATE usuario SET nome = :nome, senha = :senha WHERE id = :id");
+            r.bindValue(":nome", usr.getNome());
+            r.bindValue(":senha", usr.getSenha());
+            r.bindValue(":id", usr.getId());
+            r.execute();
+            r.executeRemote();
         } catch (Exception ex) {
             return "Erro ao atualizar: " + ex.getMessage();
             //("Erro (criação tabela)",ex.getMessage());
@@ -101,15 +105,45 @@ public class usuarioControle {
         return "Dados Atualizados ";
     }
 
+    public usuario monta(int aidi){
+        usuario us = new usuario();
+        try {
+            remote r = new remote(this.com);
+            r.prepare("SELECT * FROM usuario WHERE id = :id");
+            r.bindValue(":id", aidi);
+            Cursor c =  r.executeQuery();
+
+
+            int cursorCont = c.getCount();
+
+
+            c.moveToFirst();
+            if (cursorCont > 0) {
+                System.out.println("" + c.getInt(c.getColumnIndex("id")));
+                us.setId("" + c.getInt(c.getColumnIndex("id")));
+                us.setNome(c.getString(c.getColumnIndex("nome")));
+                us.setSenha(c.getString(c.getColumnIndex("senha")));
+            } else {
+
+            }
+            c.close();
+
+        } catch (SQLException e) {
+
+        }
+        return us;
+    }
+
     public void sincronizaUsuario(){
         remote r = new remote(this.com){
             @Override
             public void success(JSONArray jsonArray) {
                 super.success(jsonArray);
+                this.prepare("delete from usuario");
+                this.execute();
                 for(int i = 0; i < jsonArray.length(); i++){
                     try {
-                        this.prepare("delete from usuario");
-                        this.execute();
+
                         usuario us = new usuario(jsonArray.getJSONObject(i));
                         this.prepare("INSERT INTO usuario(nome, senha) values (:nome, :senha)");
                         this.bindValue(":nome", us.getNome());

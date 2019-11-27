@@ -17,6 +17,12 @@ public class usuario {
     public usuario() {
     }
 
+    public usuario(usuario usuario){
+        this.id = usuario.getId();
+        this.nome = usuario.getNome();
+        this.senha = usuario.getSenha();
+    }
+
     public usuario(JSONObject json) {
         Field[] fields = this.getClass().getDeclaredFields();
         for (int j = 0; j < fields.length; j++) {

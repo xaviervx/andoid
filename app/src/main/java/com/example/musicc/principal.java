@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.musicc.controle.musicaControle;
+import com.example.musicc.controle.usuarioControle;
+import com.example.musicc.modelo.usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -48,7 +50,11 @@ public class principal extends AppCompatActivity {
         campoNome = (TextView) findViewById(R.id.textNome);
         final Intent intent = getIntent();
 
-        campoNome.setText(intent.getStringExtra("nome"));
+        usuarioControle uc = new usuarioControle(principal.this);
+        final usuario usu = new usuario(uc.monta(Integer.parseInt(intent.getStringExtra("id"))));
+
+
+        campoNome.setText(usu.getNome());
         pesquisar = (ImageButton) findViewById(R.id.btPesquisar);
 
         config = (ImageButton) findViewById(R.id.btConfig);
@@ -58,11 +64,11 @@ public class principal extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(principal.this, configuracoesUsuario.class);
 
-                Toast.makeText(principal.this, "Teste do botão de configuração", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(principal.this, "Teste do botão de configuração", Toast.LENGTH_SHORT).show();
 
-                i.putExtra("id", intent.getStringExtra("id"));
-                i.putExtra("nome", intent.getStringExtra("nome"));
-                i.putExtra("senha", intent.getStringExtra("senha"));
+                i.putExtra("id", usu.getId());
+                i.putExtra("nome", usu.getNome());
+                i.putExtra("senha", usu.getSenha());
 
                 startActivity(i);
             }
@@ -75,10 +81,17 @@ public class principal extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent tela = new Intent(principal.this, vermusica.class);
-                tela.putExtra("nome", itens.get(i).toString() );
 
-                startActivity(tela);
+                if(!itens.get(i).equals("Não possui musicas cadastradas")){
+                    Intent tela = new Intent(principal.this, vermusica.class);
+                    tela.putExtra("nome", itens.get(i).toString() );
+
+                    startActivity(tela);
+                }else{
+                    Toast.makeText(principal.this, "Comece cadastrando uma musica", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 

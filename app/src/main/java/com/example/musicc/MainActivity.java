@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.musicc.controle.conexao;
+import com.example.musicc.controle.musicaControle;
 import com.example.musicc.controle.remote;
 import com.example.musicc.controle.usuarioControle;
 import com.example.musicc.modelo.usuario;
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
+
+        usuarioControle uc = new usuarioControle(MainActivity.this);
+        uc.sincronizaUsuario();
+
+        musicaControle mc = new musicaControle(MainActivity.this);
+        mc.sincronizaMusica();
+
         ednome = (EditText) findViewById(R.id.ednome);
         edsenha = (EditText) findViewById(R.id.edsenha);
         btentrar =  (Button) findViewById(R.id.btentrar);
