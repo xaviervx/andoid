@@ -37,6 +37,13 @@ public class cadastroMusica extends AppCompatActivity {
         btadicionar = (Button) findViewById(R.id.adicionar);
         btcancelar = (Button) findViewById(R.id.cancelar);
 
+        btcancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         btadicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

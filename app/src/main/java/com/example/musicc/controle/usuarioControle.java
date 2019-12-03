@@ -102,7 +102,7 @@ public class usuarioControle {
             return "Erro ao atualizar: " + ex.getMessage();
             //("Erro (criação tabela)",ex.getMessage());
         }
-        return "Dados Atualizados ";
+        return "Dados Atualizados";
     }
 
     public usuario monta(int aidi){
@@ -145,7 +145,8 @@ public class usuarioControle {
                     try {
 
                         usuario us = new usuario(jsonArray.getJSONObject(i));
-                        this.prepare("INSERT INTO usuario(nome, senha) values (:nome, :senha)");
+                        this.prepare("INSERT INTO usuario(id, nome, senha) values (:id, :nome, :senha)");
+                        bindValue(":id", us.getId());
                         this.bindValue(":nome", us.getNome());
                         this.bindValue(":senha", us.getSenha());
                         this.execute();

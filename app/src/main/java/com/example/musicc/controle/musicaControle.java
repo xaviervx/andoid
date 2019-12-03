@@ -130,7 +130,8 @@ public class musicaControle {
                     try {
 
                         musica mus = new musica(jsonArray.getJSONObject(i));
-                        this.prepare("INSERT INTO musica(nome, autor, letra, traducao, album) values (:nome, :autor, :letra, :traducao, :album)");
+                        this.prepare("INSERT INTO musica(id, nome, autor, letra, traducao, album) values (:id, :nome, :autor, :letra, :traducao, :album)");
+                        this.bindValue(":id", mus.getId());
                         this.bindValue(":nome", mus.getNome());
                         this.bindValue(":autor", mus.getAutor());
                         this.bindValue(":letra", mus.getLetra());
