@@ -3,6 +3,7 @@ package com.example.musicc.controle;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.android.volley.VolleyError;
 import com.example.musicc.modelo.favorita;
 
 import org.json.JSONArray;
@@ -36,8 +37,15 @@ public class favoritaControle {
 
     public String inserirfavorita(favorita favo) {
         try {
-            remote r = new remote(this.com);
-            r.prepare("INSERT INTO favorita(id_usuario, id_musica) values (:idUsuario, :idMusica)");
+            remote r = new remote(this.com){
+                @Override
+                public void responseError(VolleyError response) {
+                    super.responseError(response);
+                    this.simpleReplace(" favorita", " favoritaclone");
+                    this.execute();
+                }
+            };
+            r.prepare("insert into favorita(id_usuario, id_musica) values (:idUsuario, :idMusica)");
             r.bindValue(":idUsuario", favo.getId_usuario());
             r.bindValue(":idMusica", favo.getId_musica());
             r.execute();
@@ -65,7 +73,36 @@ public class favoritaControle {
     }
 
     public void sincronizaFavorita(){
-        remote r = new remote(this.com){
+
+        remote r = new remote(this.com);
+        r.prepare("SELECT * FROM favoritaclone");
+        Cursor c = r.executeQuery();
+
+        if(c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                remote re = new remote(this.com){
+                    @Override
+                    public void responseError(VolleyError response) {
+                        super.responseError(response);
+                        this.simpleReplace(" favorita", " favoritaclone");
+                        this.execute();
+                    }
+                };
+                favorita favo = new favorita(c);
+                re.prepare("insert into favorita(id_usuario, id_musica) values (:idUsuario, :idMusica)");
+                re.bindValue(":idUsuario", favo.getId_usuario());
+                re.bindValue(":idMusica", favo.getId_musica());
+                re.executeRemote();
+                remote rem = new remote(this.com);
+                rem.prepare("delete from favoritaclone where id_usuario = :idUsuario AND id_musica = :idMusica");
+                rem.bindValue(":idUsuario", favo.getId_usuario());
+                rem.bindValue(":idMusica", favo.getId_musica());
+                rem.execute();
+            }while (c.moveToNext());
+        }
+
+        r = new remote(this.com){
             @Override
             public void success(JSONArray jsonArray) {
                 super.success(jsonArray);
@@ -87,6 +124,7 @@ public class favoritaControle {
         };
         r.prepare("SELECT * FROM favorita");
         r.executeRemote();
+
     }
 
 }

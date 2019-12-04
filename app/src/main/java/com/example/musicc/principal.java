@@ -30,7 +30,6 @@ import java.io.OutputStreamWriter;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import static com.example.musicc.R.drawable.estrela;
 
 public class principal extends AppCompatActivity {
 

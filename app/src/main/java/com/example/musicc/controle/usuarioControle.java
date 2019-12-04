@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.volley.VolleyError;
 import com.example.musicc.modelo.usuario;
 
 import org.json.JSONArray;
@@ -26,7 +27,15 @@ public class usuarioControle {
 
     public String inserirusuario(usuario us) {
         try {
-            remote r = new remote(this.com);
+            remote r = new remote(this.com){
+                @Override
+                public void responseError(VolleyError response) {
+                    super.responseError(response);
+                    this.simpleReplace(" usuario", " usuarioclone");
+                    this.execute();
+                }
+            };
+
             r.prepare("INSERT INTO usuario(nome, senha) values (:nome, :senha)");
             r.bindValue(":nome", us.getNome());
             r.bindValue(":senha", us.getSenha());
@@ -135,7 +144,35 @@ public class usuarioControle {
     }
 
     public void sincronizaUsuario(){
-        remote r = new remote(this.com){
+
+        remote r = new remote(this.com);
+        r.prepare("SELECT * FROM usuarioclone");
+        Cursor c = r.executeQuery();
+
+        if(c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                remote re = new remote(this.com){
+                    @Override
+                    public void responseError(VolleyError response) {
+                        super.responseError(response);
+                        this.simpleReplace(" usuario", " usuarioclone");
+                        this.execute();
+                    }
+                };
+                usuario us = new usuario(c);
+                re.prepare("INSERT INTO usuario(nome, senha) values (:nome, :senha)");
+                re.bindValue(":nome", us.getNome());
+                re.bindValue(":senha", us.getSenha());
+                re.executeRemote();
+                remote rem = new remote(this.com);
+                rem.prepare("delete from usuarioclone where id = :id");
+                rem.bindValue(":id", us.getId());
+                rem.execute();
+            }while (c.moveToNext());
+        }
+
+        r = new remote(this.com){
             @Override
             public void success(JSONArray jsonArray) {
                 super.success(jsonArray);
@@ -146,7 +183,7 @@ public class usuarioControle {
 
                         usuario us = new usuario(jsonArray.getJSONObject(i));
                         this.prepare("INSERT INTO usuario(id, nome, senha) values (:id, :nome, :senha)");
-                        bindValue(":id", us.getId());
+                        this.bindValue(":id", us.getId());
                         this.bindValue(":nome", us.getNome());
                         this.bindValue(":senha", us.getSenha());
                         this.execute();
@@ -158,5 +195,7 @@ public class usuarioControle {
         };
         r.prepare("SELECT * FROM usuario");
         r.executeRemote();
+
+
     }
 }

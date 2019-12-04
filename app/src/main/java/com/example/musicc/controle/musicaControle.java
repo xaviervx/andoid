@@ -6,6 +6,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.volley.VolleyError;
 import com.example.musicc.modelo.musica;
 
 import org.json.JSONArray;
@@ -104,7 +105,14 @@ public class musicaControle {
 
         String ret = "";
         try {
-            remote r = new remote(this.com);
+            remote r = new remote(this.com){
+                @Override
+                public void responseError(VolleyError response) {
+                    super.responseError(response);
+                    this.simpleReplace(" musica", " musicaclone");
+                    this.execute();
+                }
+            };
             r.prepare("INSERT INTO musica(nome, autor, letra, traducao, album) values (:nome, :autor, :letra, :traducao, :album)");
             r.bindValue(":nome", mus.getNome());
             r.bindValue(":autor", mus.getAutor());
@@ -120,7 +128,40 @@ public class musicaControle {
         return ret;
     }
     public void sincronizaMusica(){
-        remote r = new remote(this.com){
+
+        remote r = new remote(this.com);
+        r.prepare("SELECT * FROM musicaclone");
+        Cursor c = r.executeQuery();
+
+        if(c.getCount() > 0){
+            c.moveToFirst();
+            do {
+                remote re = new remote(this.com){
+                    @Override
+                    public void responseError(VolleyError response) {
+                        super.responseError(response);
+                        this.simpleReplace(" musica", " musicaclone");
+                        this.execute();
+                    }
+                };
+                musica mus = new musica(c);
+                re.prepare("INSERT INTO musica(nome, autor, letra, traducao, album) values (:nome, :autor, :letra, :traducao, :album)");
+                re.bindValue(":nome", mus.getNome());
+                re.bindValue(":autor", mus.getAutor());
+                re.bindValue(":letra", mus.getLetra());
+                re.bindValue(":traducao", mus.getTraducao());
+                re.bindValue(":album", mus.getAlbum());
+                re.executeRemote();
+                remote rem = new remote(this.com);
+                rem.prepare("delete from musicaclone where id = :id");
+                rem.bindValue(":id", mus.getId());
+                rem.execute();
+            }while (c.moveToNext());
+        }
+
+
+
+        r = new remote(this.com){
             @Override
             public void success(JSONArray jsonArray) {
                 super.success(jsonArray);
@@ -146,6 +187,9 @@ public class musicaControle {
         };
         r.prepare("SELECT * FROM musica");
         r.executeRemote();
+
+
+
     }
 
 }

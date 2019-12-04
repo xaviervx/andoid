@@ -57,14 +57,25 @@ public class vermusica extends AppCompatActivity {
         favo.setId_musica(mus.getId());
         final favoritaControle favoControl = new favoritaControle(vermusica.this);
 
+
         if(favoControl.efavorita(favo)){
-//            favoritar.setImageDrawable(R.drawable.a);
+            favoritar.setBackgroundResource(R.drawable.estrelaamarela);
+        }else{
+
         }
 
         favoritar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(vermusica.this, favoControl.inserirfavorita(favo), Toast.LENGTH_SHORT).show();
+                if(favoControl.efavorita(favo)){
+                    Toast.makeText(vermusica.this, favoControl.tirarfavorita(favo), Toast.LENGTH_SHORT).show();
+                    favoritar.setBackgroundResource(R.drawable.estrelabranca);
+                }else{
+                    Toast.makeText(vermusica.this, favoControl.inserirfavorita(favo), Toast.LENGTH_SHORT).show();
+                    favoritar.setBackgroundResource(R.drawable.estrelaamarela);
+                }
+
+
             }
         });
     }

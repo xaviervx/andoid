@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,6 +20,7 @@ import com.example.musicc.controle.conexao;
 import com.example.musicc.controle.favoritaControle;
 import com.example.musicc.controle.musicaControle;
 import com.example.musicc.controle.remote;
+import com.example.musicc.controle.temNet;
 import com.example.musicc.controle.usuarioControle;
 import com.example.musicc.modelo.usuario;
 
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        temNet TemNet = new temNet();
+        registerReceiver(TemNet, intentFilter);
     }
 
     private void cadastrar() {

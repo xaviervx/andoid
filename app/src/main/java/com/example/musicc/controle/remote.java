@@ -170,8 +170,13 @@ public class remote<E> {
         this.sql = this.sql.replaceAll(param, "" + value);
     }
 
+    public void simpleReplace(String param, String value) {
+        this.sql = this.sql.replaceAll(param, value);
+    }
+
     public boolean execute() {
         try {
+            Log.d("avanco", "Execute Local: " +this.sql);
             db.execSQL(sql);
             return true;
         } catch (Exception e) {
@@ -182,6 +187,7 @@ public class remote<E> {
 
     public Cursor executeQuery() {
         try {
+            Log.d("avanco", "Query Local: " +this.sql);
             Cursor c = this.db.rawQuery(this.sql, null);
             return c;
 
@@ -204,6 +210,7 @@ public class remote<E> {
     public void executeRemote() {
         if (!this.remoteAdress.equals("")) {
             Log.d("avanco", "1");
+            Log.d("avanco", "executeRemote: " +this.sql);
             Thread t = new Thread() {
                 @Override
                 public void run() {
