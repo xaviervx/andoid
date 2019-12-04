@@ -9,33 +9,33 @@ if ($_REQUEST['token_acesso'] == 'c-m35jf7k2gh34x6c2j45h7v3k56') {
             while ($linha = $Stmt->fetch()) {
                 foreach ($linha as $atributo => $valor) {
                     if (isset($valor)) {
-                        $valor = utf8_encode($valor);
+                       // $valor = utf8_encode($valor);
                         $linha[$atributo]= $valor;
                     }
                 }
 
-               array_push($arr , $linha);
+                array_push($arr , $linha);
             }
-			//var_dump($arr);
+            //var_dump($arr);
 
 
 //var_dump($result);
-        $teste = json_encode($arr);
+            $teste = json_encode($arr);
+            header('Content-type: application/json');
+            echo $teste;
+        } else {
+            echo "[".json_encode(array("status" => "false" , "data" => "statement can't be executed verify your SQL"))."," . json_encode($Stmt->errorInfo()) . "]";
+        }
+    } else {
         header('Content-type: application/json');
-        echo $teste;
-    } else {
-        echo "[" . json_encode($Stmt->errorInfo()) . "]";
+        echo "[";
+        if ($Stmt->execute()) {
+            echo json_encode(array("status" => "true", "rowCount" => $Stmt->rowCount()));
+        } else {
+             echo "[".json_encode(array("status" => "false" , "data" => "statement can't be executed verify your SQL"))."," . json_encode($Stmt->errorInfo()) . "]";
+        }
+        echo "]";
     }
-} else {
-    header('Content-type: application/json');
-    echo "[";
-    if ($Stmt->execute()) {
-        echo json_encode(array("status" => "true", "rowCount" => $Stmt->rowCount()));
-    } else {
-        echo json_encode(array("status" => "false"));
-    }
-    echo "]";
-}
 }else{
-    echo "[" . json_encode(array("erro" => "access_denied")) . "]";
+    echo "[" . json_encode(array("status" => "access_denied")) . "]";
 }
