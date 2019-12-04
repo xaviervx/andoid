@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.musicc.controle.conexao;
+import com.example.musicc.controle.favoritaControle;
 import com.example.musicc.controle.musicaControle;
 import com.example.musicc.controle.remote;
 import com.example.musicc.controle.usuarioControle;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         musicaControle mc = new musicaControle(MainActivity.this);
         mc.sincronizaMusica();
+
+        favoritaControle fc = new favoritaControle(MainActivity.this);
+        fc.sincronizaFavorita();
 
         ednome = (EditText) findViewById(R.id.ednome);
         edsenha = (EditText) findViewById(R.id.edsenha);

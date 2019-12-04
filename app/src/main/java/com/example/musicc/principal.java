@@ -30,6 +30,8 @@ import java.io.OutputStreamWriter;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import static com.example.musicc.R.drawable.estrela;
+
 public class principal extends AppCompatActivity {
 
     TextView campoNome;
@@ -85,6 +87,7 @@ public class principal extends AppCompatActivity {
                 if(!itens.get(i).equals("Não possui musicas cadastradas")){
                     Intent tela = new Intent(principal.this, vermusica.class);
                     tela.putExtra("nome", itens.get(i).toString() );
+                    tela.putExtra("idUsuario", usu.getId());
 
                     startActivity(tela);
                 }else{
